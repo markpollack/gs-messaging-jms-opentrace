@@ -21,6 +21,12 @@ import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
+import brave.Tracing;
+import brave.opentracing.BraveTracer;
+import zipkin.Span;
+import zipkin.reporter.AsyncReporter;
+import zipkin.reporter.okhttp3.OkHttpSender;
+
 @SpringBootApplication
 @EnableJms
 public class Application {
@@ -31,6 +37,17 @@ public class Application {
                 new Configuration.ReporterConfiguration())
                 .getTracer();
     }
+
+    //TBD:  brave-opentracing uses opentracing-api-0.21.0 which is not
+    //      compatible with the opentracing-api-0.30 which opentracing-jms uses
+
+//	@Bean
+//	public io.opentracing.Tracer zipkinTracer() {
+//		OkHttpSender okHttpSender = OkHttpSender.create("http://localhost:9411/api/v1/spans");
+//		AsyncReporter<Span> reporter = AsyncReporter.builder(okHttpSender).build();
+//		Tracing braveTracer = Tracing.newBuilder().localServiceName("spring-boot-jms").reporter(reporter).build();
+//		return BraveTracer.create(braveTracer);
+//	}
 
 
     @Bean
